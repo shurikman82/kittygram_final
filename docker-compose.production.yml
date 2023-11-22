@@ -12,7 +12,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    build: ./backend/
+    image: shurikman82/kittygram_backend
     env_file: .env
     volumes:
       - media:/app/media/
@@ -21,19 +21,19 @@ services:
       - db
   frontend:
     env_file: .env
-    build: ./frontend/
-    command: cp -r /app/build/. /static/
+    image: shurikman82/kittygram_frontend
+    command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static/
     depends_on:
       - backend
   gateway:
-    build: ./nginx/
+    image: shurikman82/kittygram_gateway
     env_file: .env
     ports:
       - 9000:80
     volumes:
-      - static:/staticfiles/
+      - static:/static/
       - media:/app/media/
     depends_on:
       - backend
